@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class SymbolHandler implements TextHandler {
     private final String LETTER_REGEXP = "[A-Za-z]";
-    private Pattern letterPattern = Pattern.compile(LETTER_REGEXP);
+
     @Override
     public void setHandler(TextHandler handler) {
 
@@ -19,7 +19,7 @@ public class SymbolHandler implements TextHandler {
 
     @Override
     public void handle(String text, TextComponent component) {
-
+        Pattern letterPattern = Pattern.compile(LETTER_REGEXP);
         Matcher letterMatcher = letterPattern.matcher(text);
         while (letterMatcher.find()){
             String letter = letterMatcher.group();

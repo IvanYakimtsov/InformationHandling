@@ -18,7 +18,7 @@ public class ParagraphHandler implements TextHandler {
 
     private final String PARAGRAPH_REGEXP = "\\t.+[!?.]";
 
-    Pattern pattern = Pattern.compile(PARAGRAPH_REGEXP);
+
 
 //    public ParagraphHandler(TextHandler handler) {
 //        this.handler = handler;
@@ -31,6 +31,7 @@ public class ParagraphHandler implements TextHandler {
 
     @Override
     public void handle(String text, TextComponent component) {
+        Pattern pattern = Pattern.compile(PARAGRAPH_REGEXP);
         //TODO: handler null check
 
         Matcher matcher = pattern.matcher(text);

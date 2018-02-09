@@ -1,6 +1,5 @@
 package com.yakimtsov.ih.parser;
 
-import java.util.Collections;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -9,23 +8,23 @@ import java.util.StringTokenizer;
  */
 public class RPNParser {
     private final String OPERATORS = "+-*/";
-    private final String VARIABLE = "ij";
-    private Stack<String> stackOperations = new Stack<String>();
-    private Stack<String> stackRPN = new Stack<String>();
-    private Stack<String> stackAnswer = new Stack<String>();
+    private final String VARIABLES = "ij";
+ //   private final String NUVBER_REGEX = "\d"
+    private Stack<String> stackOperations = new Stack<>();
+    private Stack<String> stackRPN = new Stack<>();
 
-    public String parseRPN(String expression) {
-        return "";
-    }
 
-    public void parse(String expression) {
+    public String parse(String expression) {
         // cleaning stacks
         stackOperations.clear();
         stackRPN.clear();
 
         // make some preparations
-        expression = expression.replace(" ", "").replace("(-", "(0-")
-                .replace(",-", ",0-");
+        expression = expression.replace("i++", "(i+1)").replace("++i", "(i+1)")
+                .replace("i--", "(i-1)").replace("--i", "(i-1)")
+                .replace("j++", "(j+1)").replace("++j", "(j+1)")
+                .replace("j--", "(j-1)").replace("--j", "(j-1)")
+                .replace(" ", "").replace("(-", "(0-");
         if (expression.charAt(0) == '-') {
             expression = "0" + expression;
         }
@@ -63,20 +62,19 @@ public class RPNParser {
             stackRPN.push(stackOperations.pop());
         }
 
-        Collections.reverse(stackRPN);
-
-        stackRPN.forEach(System.out::println);
+        StringBuilder result = new StringBuilder();
+        stackRPN.forEach(c -> {result.append(c + " ");});
+   //     System.out.println(result.toString());
+        return result.toString();
     }
 
 
     private boolean isNumber(String token) {
+        //TODO: fix it
         try {
             Double.parseDouble(token);
         } catch (Exception e) {
-            if (token.equals(VARIABLE)) {
-                return true;
-            }
-            return false;
+            return VARIABLES.contains(token);
         }
         return true;
     }

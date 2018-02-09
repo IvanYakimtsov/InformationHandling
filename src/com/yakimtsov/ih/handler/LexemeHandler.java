@@ -1,6 +1,7 @@
 package com.yakimtsov.ih.handler;
 
 import com.yakimtsov.ih.composite.*;
+import com.yakimtsov.ih.interpreter.RPNCalculator;
 import com.yakimtsov.ih.parser.RPNParser;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,7 @@ public class LexemeHandler implements TextHandler {
     private final String LEXEME_REGEXP = "[^\\s]+";
     private final String FORMULA_REGEXP = "\\(*-?\\d.+?(?=\\s\\w{2,})";
 
-    private Pattern pattern = Pattern.compile(LEXEME_REGEXP);
+
 
 
     public void setHandler(TextHandler handler) {
@@ -28,13 +29,28 @@ public class LexemeHandler implements TextHandler {
 
     @Override
     public void handle(String text, TextComponent component) {
+        Pattern pattern = Pattern.compile(LEXEME_REGEXP);
         //TODO: handler null check
         //TODO: calculate formula
         RPNParser parser = new RPNParser();
 
-        String pureText = text.replaceAll(FORMULA_REGEXP,"2018");
+        Pattern formulaPattern = Pattern.compile(FORMULA_REGEXP);
 
-        Matcher matcher = pattern.matcher(pureText);
+        Matcher matcher = formulaPattern.matcher(text);
+        RPNCalculator calculator = new RPNCalculator();
+
+        while (matcher.find()){
+            String formula = matcher.group();
+       //     System.out.println(parser.parse(formula));
+            String rpnFormula = parser.parse(formula);
+            Double value = calculator.calculate(rpnFormula);
+            text = text.replace(formula,String.valueOf(value));
+        }
+
+
+    //    String pureText = text.replaceAll(FORMULA_REGEXP,"2018");
+
+        matcher = pattern.matcher(text);
         while (matcher.find()) {
             String lexeme = matcher.group();
             TextPart child = new TextPart(TextPart.TextPartType.LEXEME);

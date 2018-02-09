@@ -19,7 +19,7 @@ public class SentenceHandler implements TextHandler {
     //TODO: fix regex
     private final String SENTENCE_REGEXP = "\\s.+?[!?.]\\n?";
 
-    Pattern pattern = Pattern.compile(SENTENCE_REGEXP);
+
 
     public void setHandler(TextHandler handler) {
         this.handler = handler;
@@ -28,6 +28,7 @@ public class SentenceHandler implements TextHandler {
     @Override
     public void handle(String text, TextComponent component) {
         //TODO: handler null check
+        Pattern pattern = Pattern.compile(SENTENCE_REGEXP);
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String sentence = matcher.group();
