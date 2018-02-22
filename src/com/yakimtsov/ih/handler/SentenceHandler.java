@@ -17,8 +17,7 @@ public class SentenceHandler implements TextHandler {
     private TextHandler handler;
 
     //TODO: fix regex
-    private final String SENTENCE_REGEXP = "\\s.+?[!?.]\\n?";
-
+    private static final String SENTENCE_REGEXP = "\\s.+?[!?.]\\n?";
 
 
     public void setHandler(TextHandler handler) {
@@ -27,14 +26,15 @@ public class SentenceHandler implements TextHandler {
 
     @Override
     public void handle(String text, TextComponent component) {
-        //TODO: handler null check
         Pattern pattern = Pattern.compile(SENTENCE_REGEXP);
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String sentence = matcher.group();
             TextComponent child = new TextPart(TextPart.TextPartType.SENTENCE);
             component.add(child);
-            handler.handle(sentence,child);
+            if (handler != null) {
+                handler.handle(sentence, child);
+            }
         }
     }
 }

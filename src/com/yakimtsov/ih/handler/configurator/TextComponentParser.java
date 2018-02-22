@@ -7,7 +7,7 @@ import com.yakimtsov.ih.handler.*;
 /**
  * Created by Ivan on 07.02.2018.
  */
-public class TextHandlerConfigurator {
+public class TextComponentParser {
     private ParagraphHandler paragraphHandler = new ParagraphHandler();
     private SentenceHandler sentenceHandler = new SentenceHandler();
     private LexemeHandler lexemeHandler = new LexemeHandler();
@@ -15,7 +15,7 @@ public class TextHandlerConfigurator {
     private SymbolHandler symbolHandler = new SymbolHandler();
 
 
-    public TextHandlerConfigurator(){
+    public TextComponentParser(){
         paragraphHandler.setHandler(sentenceHandler);
         sentenceHandler.setHandler(lexemeHandler);
         lexemeHandler.setHandler(wordHandler);

@@ -16,13 +16,7 @@ public class ParagraphHandler implements TextHandler {
     private static Logger logger = LogManager.getLogger();
     private TextHandler handler;
 
-    private final String PARAGRAPH_REGEXP = "\\t.+[!?.]";
-
-
-
-//    public ParagraphHandler(TextHandler handler) {
-//        this.handler = handler;
-//    }
+    private static final String PARAGRAPH_REGEXP = "\\t.+[!?.]";
 
 
     public void setHandler(TextHandler handler) {
@@ -32,14 +26,16 @@ public class ParagraphHandler implements TextHandler {
     @Override
     public void handle(String text, TextComponent component) {
         Pattern pattern = Pattern.compile(PARAGRAPH_REGEXP);
-        //TODO: handler null check
 
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String paragraph = matcher.group();
             TextComponent child = new TextPart(TextPart.TextPartType.PARAGRAPH);
             component.add(child);
-            handler.handle(paragraph,child);
+            if (handler != null) {
+                handler.handle(paragraph, child);
+            }
+
         }
 
     }

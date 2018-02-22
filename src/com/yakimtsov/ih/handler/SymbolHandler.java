@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
  * Created by Ivan on 08.02.2018.
  */
 public class SymbolHandler implements TextHandler {
-    private final String LETTER_REGEXP = "[A-Za-z]";
+   // private static final String LETTER_REGEXP = "[A-Za-z]";
+    private static final String LETTER_REGEXP = ".";
 
     @Override
     public void setHandler(TextHandler handler) {
@@ -23,8 +24,8 @@ public class SymbolHandler implements TextHandler {
         Matcher letterMatcher = letterPattern.matcher(text);
         while (letterMatcher.find()){
             String letter = letterMatcher.group();
-            Symbol child = new Symbol(Symbol.SymbolType.LATTER);
-            child.setValue(letter);
+            Symbol child = new Symbol(Symbol.SymbolType.SYMBOL);
+            child.setValue(letter.charAt(0));
             component.add(child);
         }
     }

@@ -1,6 +1,7 @@
 package com.yakimtsov.ih.composite;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -8,21 +9,21 @@ import java.util.List;
  */
 public class Symbol implements TextComponent {
     public static enum SymbolType {
-        PUNCTUATION_MARK, LATTER, DIGIT
+        PUNCTUATION_MARK, SYMBOL//, DIGIT
     }
 
-    private String value;
+    private char value;
     private SymbolType type;
 
     public Symbol(SymbolType type) {
         this.type = type;
     }
 
-    public String getValue() {
+    public char getValue() {
        return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(char value) {
         this.value = value;
     }
 
@@ -41,9 +42,14 @@ public class Symbol implements TextComponent {
         return new ArrayList<>();
     }
 
+//    @Override
+//    public void sort(Comparator<TextComponent> comparator) {
+//
+//    }
+
     @Override
-    public String execute() {
-        return value;
+    public String toString() {
+        return String.valueOf(value);
     }
 
 

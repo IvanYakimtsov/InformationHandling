@@ -1,5 +1,6 @@
 package com.yakimtsov.ih.composite;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -10,6 +11,6 @@ public interface TextComponent {
     void remove(TextComponent t);
   //  void setValue(String value);
     List<TextComponent> getChildren();
-
-    String execute();
+//    void sort(Comparator<TextComponent> comparator);
+//    String execute();
 }

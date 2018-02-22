@@ -1,6 +1,7 @@
 package com.yakimtsov.ih.composite;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -47,13 +48,18 @@ public class TextPart implements TextComponent {
         return children;
     }
 
+//    @Override
+//    public void sort(Comparator<TextComponent> comparator) {
+//        children.sort(comparator);
+//    }
+
     @Override
-    public String execute() {
+    public String toString() {
         StringBuilder result = new StringBuilder();
 
         result.append(TEXT_PART_SEPARATOR);
         for (TextComponent child: children){
-            result.append(child.execute());
+            result.append(child.toString());
         }
 
         if(textPartType == TextPartType.PARAGRAPH){

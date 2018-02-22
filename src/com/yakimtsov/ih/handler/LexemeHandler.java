@@ -17,10 +17,8 @@ public class LexemeHandler implements TextHandler {
     private static Logger logger = LogManager.getLogger();
     private TextHandler handler;
 
-    private final String LEXEME_REGEXP = "[^\\s]+";
-    private final String FORMULA_REGEXP = "\\(*-?\\d.+?(?=\\s\\w{2,})";
-
-
+    private static final String LEXEME_REGEXP = "[^\\s]+";
+    private static final String FORMULA_REGEXP = "\\(*-?\\d.+?(?=\\s\\w{2,})";
 
 
     public void setHandler(TextHandler handler) {
@@ -30,8 +28,7 @@ public class LexemeHandler implements TextHandler {
     @Override
     public void handle(String text, TextComponent component) {
         Pattern pattern = Pattern.compile(LEXEME_REGEXP);
-        //TODO: handler null check
-        //TODO: calculate formula
+
         RPNParser parser = new RPNParser();
 
         Pattern formulaPattern = Pattern.compile(FORMULA_REGEXP);
@@ -39,23 +36,24 @@ public class LexemeHandler implements TextHandler {
         Matcher matcher = formulaPattern.matcher(text);
         RPNCalculator calculator = new RPNCalculator();
 
-        while (matcher.find()){
+        while (matcher.find()) {
             String formula = matcher.group();
-       //     System.out.println(parser.parse(formula));
             String rpnFormula = parser.parse(formula);
             Double value = calculator.calculate(rpnFormula);
-            text = text.replace(formula,String.valueOf(value));
+            text = text.replace(formula, String.valueOf(value));
         }
 
-
-    //    String pureText = text.replaceAll(FORMULA_REGEXP,"2018");
 
         matcher = pattern.matcher(text);
         while (matcher.find()) {
             String lexeme = matcher.group();
+          //  System.out.println(lexeme);
             TextPart child = new TextPart(TextPart.TextPartType.LEXEME);
             component.add(child);
-            handler.handle(lexeme,child);
+            if (handler != null) {
+                handler.handle(lexeme, child);
+            }
+
         }
     }
 
