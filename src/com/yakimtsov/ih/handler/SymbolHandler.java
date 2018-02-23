@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
  * Created by Ivan on 08.02.2018.
  */
 public class SymbolHandler implements TextHandler {
-   // private static final String SYMBOL_REGEXP = "[A-Za-z]";
     private static final String SYMBOL_REGEXP = ".";
 
     @Override

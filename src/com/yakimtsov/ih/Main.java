@@ -19,11 +19,9 @@ public class Main {
         try {
             String textString = textReader.read("Data/text.txt");
             TextComponent text = componentParser.parseComponents(textString);
-
-            TextComponentUtil.sortParagraph(text);
             System.out.println(text.toString());
 
-            TextComponentUtil.sortLexeme(text);
+            TextComponentUtil.sortParagraph(text);
             System.out.println(text.toString());
 
             TextComponentUtil.sortWords(text);

@@ -15,7 +15,7 @@ public class WordHandler implements TextHandler {
 
     private final String PUNCTUATION_BEFORE_WORD_REGEXP = "[(<{\\[]+";
     private final String PUNCTUATION_AFTER_WORD_REGEXP = "[)>},\\.\\]?!]+";
-    private final String WORD_IN_LEXEME_REGEXP = "\\w+";
+    private final String WORD_IN_LEXEME_REGEXP = "(\\w+|-)";
     private static final String NUMBER_REGEXP = "-?\\d+\\.?\\d+";
 
 

@@ -15,7 +15,7 @@ public class ParagraphHandler implements TextHandler {
     private static Logger logger = LogManager.getLogger();
     private TextHandler handler;
 
-    private static final String PARAGRAPH_REGEXP = "\\t.+[!?.]";
+    private static final String PARAGRAPH_REGEXP = "[^\\t]+";
 
 
     public void setHandler(TextHandler handler) {

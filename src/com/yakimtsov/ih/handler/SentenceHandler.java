@@ -16,8 +16,7 @@ public class SentenceHandler implements TextHandler {
     private static Logger logger = LogManager.getLogger();
     private TextHandler handler;
 
-    //TODO: fix regex
-    private static final String SENTENCE_REGEXP = "\\s.+?[!?.]\\n?";
+    private static final String SENTENCE_REGEXP = "[^.\\?\\!]+[!?.]";
 
 
     public void setHandler(TextHandler handler) {

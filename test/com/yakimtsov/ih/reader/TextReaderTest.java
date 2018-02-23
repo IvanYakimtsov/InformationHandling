@@ -12,7 +12,7 @@ public class TextReaderTest {
     @Test
     public void readPositive() {
         String text = "";
-        int actualLength = 845;
+        int actualLength = 850;
         try {
             text = reader.read("Data/text.txt");
         } catch (IncorrectFileException e) {

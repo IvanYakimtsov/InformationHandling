@@ -6,41 +6,44 @@ import java.util.Comparator;
 
 public class TextComponentUtil {
     public static void sortParagraph(TextComponent textComponent) {
-        if (textComponent.getType() == TextComponent.TextComponentType.TEXT) {
-            textComponent.getChildren().sort(Comparator.comparingInt(o -> o.getChildren().size()));
-        }
+        textComponent.getChildren().sort(Comparator.comparingInt(o -> o.getChildren().size()));
     }
 
     public static void sortLexeme(TextComponent textComponent) {
-        if (textComponent.getType() == TextComponent.TextComponentType.TEXT) {
-            for (TextComponent paragraph : textComponent.getChildren()) {
-                for (TextComponent sentence : paragraph.getChildren()) {
-                    sentence.getChildren().sort(Comparator.comparingInt(o -> o.toString().length()));
-                }
+        for (TextComponent paragraph : textComponent.getChildren()) {
+            for (TextComponent sentence : paragraph.getChildren()) {
+                sentence.getChildren().sort(Comparator.comparingInt(o -> o.toString().length()));
             }
         }
     }
 
     public static void sortWords(TextComponent textComponent) {
-        if (textComponent.getType() == TextComponent.TextComponentType.TEXT) {
-            for (TextComponent paragraph : textComponent.getChildren()) {
-                for (TextComponent sentence : paragraph.getChildren()) {
-                    sentence.getChildren().sort((firstLexeme, secondLexeme) -> {
-                        //TODO: fix it
-                        int firstWordSize = firstLexeme.getChildren()
-                                .stream()
-                                .filter(lexemeComponent -> lexemeComponent.getType() == TextComponent.TextComponentType.WORD)
-                                .mapToInt(lexemeComponent -> lexemeComponent.toString().length()).sum();
-                        int secondWordSize = secondLexeme.getChildren()
-                                .stream()
-                                .filter(lexemeComponent -> lexemeComponent.getType() == TextComponent.TextComponentType.WORD)
-                                .mapToInt(lexemeComponent -> lexemeComponent.toString().length()).sum();
-                        return firstWordSize - secondWordSize;
-                    });
-                }
+
+        for (TextComponent paragraph : textComponent.getChildren()) {
+            for (TextComponent sentence : paragraph.getChildren()) {
+                sentence.getChildren().sort((firstLexeme, secondLexeme) -> {
+                    String firstWord = "";
+                    String secondWord = "";
+
+                    for(TextComponent component: firstLexeme.getChildren()){
+                        if(component.getType() == TextComponent.TextComponentType.WORD){
+                            firstWord = component.toString();
+                            break;
+                        }
+                    }
+
+                    for(TextComponent component: secondLexeme.getChildren()){
+                        if(component.getType() == TextComponent.TextComponentType.WORD){
+                            secondWord = component.toString();
+                            break;
+                        }
+                    }
+                    return firstWord.length() - secondWord.length();
+                });
             }
         }
     }
+
 }
 
 

@@ -15,6 +15,8 @@ public class RPNParser {
     public String parse(String expression) {
         stackOperations.clear();
         stackRPN.clear();
+        Object o = new Object();
+        o.hashCode();
 
         expression = expression.replace("i++", "(i+1)").replace("++i", "(i+1)")
                 .replace("i--", "(i-1)").replace("--i", "(i-1)")
