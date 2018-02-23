@@ -1,7 +1,8 @@
 package com.yakimtsov.ih.parser;
 
-import java.util.Stack;
-import java.util.StringTokenizer;
+import com.yakimtsov.ih.exception.InvalidParametersException;
+
+import java.util.*;
 
 /**
  * Created by Ivan on 08.02.2018.
@@ -9,17 +10,14 @@ import java.util.StringTokenizer;
 public class RPNParser {
     private final String OPERATORS = "+-*/";
     private final String VARIABLES = "ij";
- //   private final String NUVBER_REGEX = "\d"
-    private Stack<String> stackOperations = new Stack<>();
-    private Stack<String> stackRPN = new Stack<>();
+    private ArrayDeque<String> stackOperations = new ArrayDeque<>();
+    private ArrayDeque<String> stackRPN = new ArrayDeque<>();
 
 
-    public String parse(String expression) {
-        // cleaning stacks
+    public String parse(String expression) throws InvalidParametersException {
         stackOperations.clear();
         stackRPN.clear();
 
-        // make some preparations
         expression = expression.replace("i++", "(i+1)").replace("++i", "(i+1)")
                 .replace("i--", "(i-1)").replace("--i", "(i-1)")
                 .replace("j++", "(j+1)").replace("++j", "(j+1)")
@@ -28,55 +26,67 @@ public class RPNParser {
         if (expression.charAt(0) == '-') {
             expression = "0" + expression;
         }
-        // splitting input string into tokens
         StringTokenizer stringTokenizer = new StringTokenizer(expression,
                 OPERATORS + "()", true);
 
-        // loop for handling each token - shunting-yard algorithm
+        //Shunting-yard algorithm https://en.wikipedia.org/wiki/Shunting-yard_algorithm
         while (stringTokenizer.hasMoreTokens()) {
             String token = stringTokenizer.nextToken();
             if (isOpenBracket(token)) {
                 stackOperations.push(token);
             } else if (isCloseBracket(token)) {
-                while (!stackOperations.empty()
-                        && !isOpenBracket(stackOperations.lastElement())) {
+                while (!stackOperations.isEmpty()
+                        && !isOpenBracket(stackOperations.getFirst())) {
                     stackRPN.push(stackOperations.pop());
                 }
-                stackOperations.pop();
-                if (!stackOperations.empty()) {
-                    stackRPN.push(stackOperations.pop());
+                if (!stackOperations.isEmpty()) {
+                    stackOperations.pop();
+                } else {
+                    throw new InvalidParametersException("missing close brackets");
                 }
+
             } else if (isNumber(token)) {
                 stackRPN.push(token);
             } else if (isOperator(token)) {
-                while (!stackOperations.empty()
-                        && isOperator(stackOperations.lastElement())
+                while (!stackOperations.isEmpty()
+                        && isOperator(stackOperations.getFirst())
                         && getPrecedence(token) <= getPrecedence(stackOperations
-                        .lastElement())) {
+                        .getFirst())) {
                     stackRPN.push(stackOperations.pop());
                 }
                 stackOperations.push(token);
             }
         }
-        while (!stackOperations.empty()) {
+        while (!stackOperations.isEmpty()) {
             stackRPN.push(stackOperations.pop());
         }
 
         StringBuilder result = new StringBuilder();
-        stackRPN.forEach(c -> {result.append(c + " ");});
-   //     System.out.println(result.toString());
+        Iterator iterator = stackRPN.descendingIterator();
+        while (iterator.hasNext()) {
+            String str = (String) iterator.next();
+            result.append(str + " ");
+        }
+
+        if (result.toString().contains("(")) {
+            throw new InvalidParametersException("missing open brackets");
+        }
         return result.toString();
     }
 
 
     private boolean isNumber(String token) {
-        //TODO: fix it
-        try {
-            Double.parseDouble(token);
-        } catch (Exception e) {
-            return VARIABLES.contains(token);
-        }
-        return true;
+//        try {
+//            Double.parseDouble(token);
+//        } catch (Exception e) {
+//            return VARIABLES.contains(token);
+//        }
+//        return true;
+//        Scanner scanner = new Scanner(token);
+//        if (scanner.hasNextDouble()) {
+//            return true;
+//        }
+        return new Scanner(token).hasNextDouble() || VARIABLES.contains(token);
     }
 
 

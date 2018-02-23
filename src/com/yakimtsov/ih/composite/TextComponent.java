@@ -7,10 +7,11 @@ import java.util.List;
  * Created by Ivan on 05.02.2018.
  */
 public interface TextComponent {
+    enum TextComponentType {
+        TEXT, PARAGRAPH, SENTENCE, LEXEME, WORD, SYMBOL
+    }
     void add(TextComponent t);
     void remove(TextComponent t);
-  //  void setValue(String value);
     List<TextComponent> getChildren();
-//    void sort(Comparator<TextComponent> comparator);
-//    String execute();
+    TextComponentType getType();
 }

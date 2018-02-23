@@ -30,7 +30,7 @@ public class SentenceHandler implements TextHandler {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String sentence = matcher.group();
-            TextComponent child = new TextPart(TextPart.TextPartType.SENTENCE);
+            TextComponent child = new TextPart(TextComponent.TextComponentType.SENTENCE);
             component.add(child);
             if (handler != null) {
                 handler.handle(sentence, child);

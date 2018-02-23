@@ -23,7 +23,7 @@ public class TextComponentParser {
     }
 
     public TextComponent parseComponents(String text){
-        TextComponent textComponent = new TextPart(TextPart.TextPartType.TEXT);
+        TextComponent textComponent = new TextPart(TextComponent.TextComponentType.TEXT);
         paragraphHandler.handle(text,textComponent);
         return textComponent;
     }

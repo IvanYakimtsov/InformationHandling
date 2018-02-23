@@ -8,27 +8,31 @@ import java.util.List;
  * Created by Ivan on 05.02.2018.
  */
 public class TextPart implements TextComponent {
-    public static enum TextPartType {
-        TEXT, PARAGRAPH, SENTENCE, LEXEME, WORD
-    }
-    private List<TextComponent> children = new ArrayList<>();
-    private TextPartType textPartType;
+
+    private ArrayList<TextComponent> children = new ArrayList<>();
+    private TextComponentType textPartType;
     private final String TEXT_PART_SEPARATOR;
 
-    public TextPart(TextPartType textPartType) {
+    public TextPart(TextComponentType textPartType) {
         this.textPartType = textPartType;
-        switch (textPartType){
-            case TEXT: TEXT_PART_SEPARATOR = "";
-                        break;
-            case SENTENCE: TEXT_PART_SEPARATOR = "";
-                            break;
-            case PARAGRAPH: TEXT_PART_SEPARATOR = "\t";
-                            break;
-            case LEXEME: TEXT_PART_SEPARATOR = " ";
-                       break;
-            case WORD: TEXT_PART_SEPARATOR = "";
-                       break;
-            default: TEXT_PART_SEPARATOR = "";
+        switch (textPartType) {
+            case TEXT:
+                TEXT_PART_SEPARATOR = "";
+                break;
+            case SENTENCE:
+                TEXT_PART_SEPARATOR = "";
+                break;
+            case PARAGRAPH:
+                TEXT_PART_SEPARATOR = "\t";
+                break;
+            case LEXEME:
+                TEXT_PART_SEPARATOR = " ";
+                break;
+            case WORD:
+                TEXT_PART_SEPARATOR = "";
+                break;
+            default:
+                TEXT_PART_SEPARATOR = "";
         }
 
     }
@@ -44,31 +48,31 @@ public class TextPart implements TextComponent {
     }
 
     @Override
-    public List<TextComponent> getChildren() {
+    public ArrayList<TextComponent> getChildren() {
         return children;
     }
 
-//    @Override
-//    public void sort(Comparator<TextComponent> comparator) {
-//        children.sort(comparator);
-//    }
+
+    @Override
+    public TextComponentType getType() {
+        return textPartType;
+    }
+
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
 
         result.append(TEXT_PART_SEPARATOR);
-        for (TextComponent child: children){
+        for (TextComponent child : children) {
             result.append(child.toString());
         }
 
-        if(textPartType == TextPartType.PARAGRAPH){
+        if (textPartType == TextComponentType.PARAGRAPH) {
             result.append("\n");
         }
 
-       return result.toString();
+        return result.toString();
     }
-
-
 
 }

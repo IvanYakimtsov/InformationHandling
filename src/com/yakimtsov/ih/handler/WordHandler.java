@@ -14,8 +14,11 @@ import java.util.regex.Pattern;
 public class WordHandler implements TextHandler {
     private TextHandler handler;
 
+    //TODO: fix it
+    private final String PUNCTUATION_BEFORE_WORD = "[(<{\\[]+(?=\\w+)";
+
     private final String LATTER_REGEXP = "[A-Za-z]";
-  //  private static final String LATTER_REGEXP = "\\w";
+    //  private static final String LATTER_REGEXP = "\\w";
     private static final String PUNCTUATION_MARK_REGEXP = "[!?.\\-,()]";
     private static final String SYMBOL_REGEXP = ".";
     private static final String DIGIT_REGEXP = "\\-?\\d+\\.?\\d+";
@@ -50,7 +53,10 @@ public class WordHandler implements TextHandler {
                         addWord(word, component);
                         word = "";
                     }
-                    addChild(symbol.charAt(0), component, Symbol.SymbolType.PUNCTUATION_MARK);
+                    //   addChild(symbol.charAt(0), component, TextComponent.TextComponentType.SYMBOL);
+                    Symbol child = new Symbol(TextComponent.TextComponentType.SYMBOL);
+                    child.setValue(symbol.charAt(0));
+                    component.add(child);
                 }
 
                 symbolMatcher = latterPattern.matcher(symbol);
@@ -62,23 +68,24 @@ public class WordHandler implements TextHandler {
             if (!"".equals(word)) {
                 addWord(word, component);
             }
+
         }
 
     }
 
 
     private void addWord(String word, TextComponent component) {
-        TextComponent child = new TextPart(TextPart.TextPartType.WORD);
+        TextComponent child = new TextPart(TextComponent.TextComponentType.WORD);
         component.add(child);
         if (handler != null) {
             handler.handle(word, child);
         }
     }
 
-    private void addChild(char word, TextComponent component, Symbol.SymbolType type) {
-        Symbol child = new Symbol(type);
-        child.setValue(word);
-        component.add(child);
-    }
+//    private void addChild(char word, TextComponent component, TextComponent.TextComponentType type) {
+//        Symbol child = new Symbol(type);
+//        child.setValue(word);
+//        component.add(child);
+//    }
 
 }

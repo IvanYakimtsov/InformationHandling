@@ -8,14 +8,11 @@ import java.util.List;
  * Created by Ivan on 05.02.2018.
  */
 public class Symbol implements TextComponent {
-    public static enum SymbolType {
-        PUNCTUATION_MARK, SYMBOL//, DIGIT
-    }
 
     private char value;
-    private SymbolType type;
+    private TextComponentType type;
 
-    public Symbol(SymbolType type) {
+    public Symbol(TextComponentType type) {
         this.type = type;
     }
 
@@ -42,10 +39,11 @@ public class Symbol implements TextComponent {
         return new ArrayList<>();
     }
 
-//    @Override
-//    public void sort(Comparator<TextComponent> comparator) {
-//
-//    }
+    @Override
+    public TextComponentType getType() {
+        return type;
+    }
+
 
     @Override
     public String toString() {

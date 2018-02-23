@@ -30,7 +30,7 @@ public class ParagraphHandler implements TextHandler {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String paragraph = matcher.group();
-            TextComponent child = new TextPart(TextPart.TextPartType.PARAGRAPH);
+            TextComponent child = new TextPart(TextComponent.TextComponentType.PARAGRAPH);
             component.add(child);
             if (handler != null) {
                 handler.handle(paragraph, child);

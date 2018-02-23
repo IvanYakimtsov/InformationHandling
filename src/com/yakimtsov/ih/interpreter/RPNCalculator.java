@@ -18,7 +18,7 @@ public class RPNCalculator {
         for (Expression terminal : listExpression) {
             terminal.interpret(context);
         }
-        return context.popValue();
+        return context.pop();
     }
 
     private ArrayDeque<Expression> parse(String expression) {
@@ -30,21 +30,21 @@ public class RPNCalculator {
             String token = tokenizer.nextToken();
             switch (token) {
                 case "+":
-                    listExpression.add((c -> c.pushValue(c.popValue() + c.popValue())));
+                    listExpression.add((c -> c.push(c.pop() + c.pop())));
                     break;
                 case "-":
-                    listExpression.add((c -> c.pushValue(c.popValue() - c.popValue())));
+                    listExpression.add((c -> c.push(c.pop() - c.pop())));
                     break;
                 case "*":
-                    listExpression.add((c -> c.pushValue(c.popValue() * c.popValue())));
+                    listExpression.add((c -> c.push(c.pop() * c.pop())));
                     break;
                 case "/":
-                    listExpression.add((c -> c.pushValue(c.popValue() / c.popValue())));
+                    listExpression.add((c -> c.push(c.pop() / c.pop())));
                     break;
                 default:
                     Scanner scan = new Scanner(token);
                     if (scan.hasNextDouble()) {
-                        listExpression.add(c -> c.pushValue(scan.nextDouble()));
+                        listExpression.add(c -> c.push(scan.nextDouble()));
                     }
             }
         }

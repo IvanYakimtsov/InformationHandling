@@ -1,6 +1,7 @@
 package com.yakimtsov.ih.handler;
 
 import com.yakimtsov.ih.composite.*;
+import com.yakimtsov.ih.exception.InvalidParametersException;
 import com.yakimtsov.ih.interpreter.RPNCalculator;
 import com.yakimtsov.ih.parser.RPNParser;
 import org.apache.logging.log4j.Level;
@@ -38,9 +39,14 @@ public class LexemeHandler implements TextHandler {
 
         while (matcher.find()) {
             String formula = matcher.group();
-            String rpnFormula = parser.parse(formula);
-            Double value = calculator.calculate(rpnFormula);
-            text = text.replace(formula, String.valueOf(value));
+            String rpnFormula = null;
+            try {
+                rpnFormula = parser.parse(formula);
+                Double value = calculator.calculate(rpnFormula);
+                text = text.replace(formula, String.valueOf(value));
+            } catch (InvalidParametersException e) {
+                logger.catching(e);
+            }
         }
 
 
@@ -48,7 +54,7 @@ public class LexemeHandler implements TextHandler {
         while (matcher.find()) {
             String lexeme = matcher.group();
           //  System.out.println(lexeme);
-            TextPart child = new TextPart(TextPart.TextPartType.LEXEME);
+            TextPart child = new TextPart(TextComponent.TextComponentType.LEXEME);
             component.add(child);
             if (handler != null) {
                 handler.handle(lexeme, child);
