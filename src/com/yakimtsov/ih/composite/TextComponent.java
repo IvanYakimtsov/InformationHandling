@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface TextComponent {
     enum TextComponentType {
-        TEXT, PARAGRAPH, SENTENCE, LEXEME, WORD, SYMBOL
+        TEXT, PARAGRAPH, SENTENCE, LEXEME, WORD, NUMBER, SYMBOL
     }
     void add(TextComponent t);
     void remove(TextComponent t);

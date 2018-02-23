@@ -1,7 +1,5 @@
 package com.yakimtsov.ih.parser;
 
-import com.yakimtsov.ih.exception.InvalidParametersException;
-
 import java.util.*;
 
 /**
@@ -14,7 +12,7 @@ public class RPNParser {
     private ArrayDeque<String> stackRPN = new ArrayDeque<>();
 
 
-    public String parse(String expression) throws InvalidParametersException {
+    public String parse(String expression) {
         stackOperations.clear();
         stackRPN.clear();
 
@@ -39,11 +37,12 @@ public class RPNParser {
                         && !isOpenBracket(stackOperations.getFirst())) {
                     stackRPN.push(stackOperations.pop());
                 }
-                if (!stackOperations.isEmpty()) {
-                    stackOperations.pop();
-                } else {
-                    throw new InvalidParametersException("missing close brackets");
-                }
+//                if (!stackOperations.isEmpty()) {
+//                    stackOperations.pop();
+//                } else {
+//                    throw new InvalidParametersException("missing close brackets");
+//                }
+                stackOperations.pop();
 
             } else if (isNumber(token)) {
                 stackRPN.push(token);
@@ -68,24 +67,15 @@ public class RPNParser {
             result.append(str + " ");
         }
 
-        if (result.toString().contains("(")) {
-            throw new InvalidParametersException("missing open brackets");
-        }
+//        if (result.toString().contains("(")) {
+//            throw new InvalidParametersException("missing open brackets");
+//        }
         return result.toString();
     }
 
 
     private boolean isNumber(String token) {
-//        try {
-//            Double.parseDouble(token);
-//        } catch (Exception e) {
-//            return VARIABLES.contains(token);
-//        }
-//        return true;
-//        Scanner scanner = new Scanner(token);
-//        if (scanner.hasNextDouble()) {
-//            return true;
-//        }
+
         return new Scanner(token).hasNextDouble() || VARIABLES.contains(token);
     }
 

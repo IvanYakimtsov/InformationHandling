@@ -1,7 +1,6 @@
-package reader;
+package com.yakimtsov.ih.reader;
 
 import com.yakimtsov.ih.exception.IncorrectFileException;
-import com.yakimtsov.ih.reader.TextReader;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -13,7 +12,7 @@ public class TextReaderTest {
     @Test
     public void readPositive() {
         String text = "";
-        int actualLength = 846;
+        int actualLength = 845;
         try {
             text = reader.read("Data/text.txt");
         } catch (IncorrectFileException e) {

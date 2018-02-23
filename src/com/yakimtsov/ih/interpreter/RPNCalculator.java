@@ -23,7 +23,6 @@ public class RPNCalculator {
 
     private ArrayDeque<Expression> parse(String expression) {
         expression = expression.replace("i", String.valueOf(I)).replace("j", String.valueOf(J));
-        //System.out.println(expression);
         ArrayDeque<Expression> listExpression = new ArrayDeque<>();
         StringTokenizer tokenizer = new StringTokenizer(expression);
         while (tokenizer.hasMoreTokens()) {

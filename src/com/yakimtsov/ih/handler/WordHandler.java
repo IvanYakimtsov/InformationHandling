@@ -1,6 +1,5 @@
 package com.yakimtsov.ih.handler;
 
-import com.sun.istack.internal.NotNull;
 import com.yakimtsov.ih.composite.Symbol;
 import com.yakimtsov.ih.composite.TextComponent;
 import com.yakimtsov.ih.composite.TextPart;
@@ -14,14 +13,10 @@ import java.util.regex.Pattern;
 public class WordHandler implements TextHandler {
     private TextHandler handler;
 
-    //TODO: fix it
-    private final String PUNCTUATION_BEFORE_WORD = "[(<{\\[]+(?=\\w+)";
-
-    private final String LATTER_REGEXP = "[A-Za-z]";
-    //  private static final String LATTER_REGEXP = "\\w";
-    private static final String PUNCTUATION_MARK_REGEXP = "[!?.\\-,()]";
-    private static final String SYMBOL_REGEXP = ".";
-    private static final String DIGIT_REGEXP = "\\-?\\d+\\.?\\d+";
+    private final String PUNCTUATION_BEFORE_WORD_REGEXP = "[(<{\\[]+";
+    private final String PUNCTUATION_AFTER_WORD_REGEXP = "[)>},\\.\\]?!]+";
+    private final String WORD_IN_LEXEME_REGEXP = "\\w+";
+    private static final String NUMBER_REGEXP = "-?\\d+\\.?\\d+";
 
 
     @Override
@@ -31,61 +26,54 @@ public class WordHandler implements TextHandler {
 
     @Override
     public void handle(String text, TextComponent component) {
-        Pattern latterPattern = Pattern.compile(LATTER_REGEXP);
-        Pattern punctuationPattern = Pattern.compile(PUNCTUATION_MARK_REGEXP);
-        Pattern digitPattern = Pattern.compile(DIGIT_REGEXP);
-        Pattern symbolPattern = Pattern.compile(SYMBOL_REGEXP);
+        Pattern numberPattern = Pattern.compile(NUMBER_REGEXP);
+        Pattern beforeWordPunctuation = Pattern.compile(PUNCTUATION_BEFORE_WORD_REGEXP);
+        Pattern afterWordPunctuation = Pattern.compile(PUNCTUATION_AFTER_WORD_REGEXP);
+        Pattern wordPattern = Pattern.compile(WORD_IN_LEXEME_REGEXP);
+        Matcher matcher = numberPattern.matcher(text);
 
-        Matcher matcher = symbolPattern.matcher(text);
-
-
-        Matcher symbolMatcher = digitPattern.matcher(text);
-        if (symbolMatcher.matches()) {
-            addWord(text, component);
+        if (matcher.matches()) {
+            TextComponent child = new TextPart(TextComponent.TextComponentType.WORD);
+            component.add(child);
+            if (handler != null) {
+                handler.handle(text, child);
+            }
         } else {
+            matcher = beforeWordPunctuation.matcher(text);
+            if (matcher.find()) {
+                addPunctuation(matcher,component);
+            }
             String word = "";
-            while (matcher.find()) {
-                String symbol = matcher.group();
-
-                symbolMatcher = punctuationPattern.matcher(symbol);
-                if (symbolMatcher.matches()) {
-                    if (!"".equals(word)) {
-                        addWord(word, component);
-                        word = "";
-                    }
-                    //   addChild(symbol.charAt(0), component, TextComponent.TextComponentType.SYMBOL);
-                    Symbol child = new Symbol(TextComponent.TextComponentType.SYMBOL);
-                    child.setValue(symbol.charAt(0));
-                    component.add(child);
-                }
-
-                symbolMatcher = latterPattern.matcher(symbol);
-                if (symbolMatcher.matches()) {
-                    word += symbol;
-                }
+            TextComponent wordComponent = null;
+            matcher = wordPattern.matcher(text);
+            if (matcher.find()){
+                word = matcher.group();
+                wordComponent = new TextPart(TextComponent.TextComponentType.WORD);
+                component.add(wordComponent);
             }
 
-            if (!"".equals(word)) {
-                addWord(word, component);
+            matcher = afterWordPunctuation.matcher(text);
+            if(matcher.find()){
+                addPunctuation(matcher,component);
             }
 
+
+            if (handler != null && wordComponent != null) {
+                handler.handle(word, wordComponent);
+            }
         }
+
 
     }
 
-
-    private void addWord(String word, TextComponent component) {
-        TextComponent child = new TextPart(TextComponent.TextComponentType.WORD);
-        component.add(child);
-        if (handler != null) {
-            handler.handle(word, child);
+    private void addPunctuation(Matcher matcher, TextComponent component){
+        String punctuation = matcher.group();
+        for(int index = 0; index<punctuation.length(); index++){
+            Symbol child = new Symbol(TextComponent.TextComponentType.SYMBOL);
+            child.setValue(punctuation.charAt(index));
+            component.add(child);
         }
     }
 
-//    private void addChild(char word, TextComponent component, TextComponent.TextComponentType type) {
-//        Symbol child = new Symbol(type);
-//        child.setValue(word);
-//        component.add(child);
-//    }
 
 }

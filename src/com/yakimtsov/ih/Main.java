@@ -19,8 +19,11 @@ public class Main {
         try {
             String textString = textReader.read("Data/text.txt");
             TextComponent text = componentParser.parseComponents(textString);
-            System.out.println(text.toString());
+
             TextComponentUtil.sortParagraph(text);
+            System.out.println(text.toString());
+
+            TextComponentUtil.sortLexeme(text);
             System.out.println(text.toString());
 
             TextComponentUtil.sortWords(text);
@@ -28,6 +31,7 @@ public class Main {
 
             TextComponentUtil.sortLexeme(text);
             System.out.println(text.toString());
+
 
         } catch (IncorrectFileException e) {
             e.printStackTrace();

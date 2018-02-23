@@ -2,7 +2,6 @@ package com.yakimtsov.ih.handler;
 
 import com.yakimtsov.ih.composite.TextComponent;
 import com.yakimtsov.ih.composite.TextPart;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
